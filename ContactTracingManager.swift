@@ -1,5 +1,6 @@
 import ContactTracing
 
+
 @objc class ContactTracingManager: NSObject {
     static let shared = ContactTracingManager(queue: DispatchQueue(label: "com.nshipster.contact-tracing-manager"))
 
@@ -93,9 +94,10 @@ import ContactTracing
         let selfTracingInfoRequest = CTSelfTracingInfoRequest()
         selfTracingInfoRequest.dispatchQueue = self.dispatchQueue
 
-        selfTracingInfoRequest.completionHandler = { (tracingInfo, error) in
-            guard error != nil else { return /* handle error */ }
-            guard let dailyTracingKeys = tracingInfo?.dailyTracingKeys else { return }
+        fetchPositiveDiagnosisKeys { result in
+            guard case let .success(positiveDiagnosisKeys) = result else {
+                /* handle error */
+            }
 
             session.addPositiveDiagnosisKeys(batching: dailyTracingKeys) { (error) in
                 guard error != nil else { return /* handle error */ }
@@ -116,3 +118,4 @@ import ContactTracing
         }
     }
 }
+                                    
