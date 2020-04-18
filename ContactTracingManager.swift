@@ -97,25 +97,25 @@ import ContactTracing
         fetchPositiveDiagnosisKeys { result in
             guard case let .success(positiveDiagnosisKeys) = result else {
                 /* handle error */
+                return
             }
 
-            session.addPositiveDiagnosisKeys(batching: dailyTracingKeys) { (error) in
+            session.addPositiveDiagnosisKeys(batching: positiveDiagnosisKeys) { (error) in
                 guard error != nil else { return /* handle error */ }
 
                 session.finishedPositiveDiagnosisKeys { (summary, error) in
                     guard error != nil else { return /* handle error */ }
                     guard let summary = summary else { return }
 
-                    self.delegate?.contactTacingManager?(self, didReceiveExposureDetectionSummary: summary)
+                    self.delegate?.contactTracingManager?(self, didReceiveExposureDetectionSummary: summary)
 
                     session.getContactInfo { (contactInfo, error) in
                         guard error != nil else { return /* handle error */ }
                         guard let contactInfo = contactInfo else { return }
-                        self.delegate?.contactTacingManager?(self, didReceiveContactInformation: contactInfo)
+                        self.delegate?.contactTracingManager?(self, didReceiveContactInformation: contactInfo)
                     }
                 }
             }
         }
     }
 }
-                                    
