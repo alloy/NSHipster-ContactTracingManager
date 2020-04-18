@@ -15,14 +15,14 @@ import ContactTracing
     private(set) var state: CTManagerState = .unknown {
         didSet {
             guard oldValue != state else { return }
-            delegate?.contactTacingManager?(self, didChangeState: state)
+            delegate?.contactTracingManager?(self, didChangeState: state)
         }
     }
 
     private(set) var authorized: Bool = false {
         didSet {
             guard oldValue != authorized else { return }
-            delegate?.contactTacingManager?(self, didChangeState: state)
+            delegate?.contactTracingManager?(self, didChangeState: state)
         }
     }
 
